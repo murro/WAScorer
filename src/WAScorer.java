@@ -35,6 +35,7 @@ public class WAScorer {
 	//Method will first open a file and read line by line
 	//Till we can determine how to parse the data
 		String line;
+		String currentAssignment = "";
 		//Read the file if the count mod 3 == 0 (no remainder, in this case the 3rd line) print the line. Should always be the score.
 		try {
 			br = new BufferedReader(new FileReader(file));
@@ -43,10 +44,15 @@ public class WAScorer {
 				scan = new Scanner(line);
 				//If current line has the phrase "Score: ", it means we are on the correct line to parse data. Create an empty String array and parseit
 				if (scan.hasNext("Score:")) {
-					System.out.println("Found Score!");
+					//System.out.println("Found Score!");
 					String[] splitLine;
 					//Split the string here and send to parse
-					parseLine(splitLine = line.split("\\s+"));
+					parseLine(splitLine = line.split("\\s+"), currentAssignment);
+				}
+				
+				if (scan.hasNext("hw") || scan.hasNext("Quiz")) {
+					//System.out.println(line.replace("(Homework)", ""));
+					currentAssignment = line.replace("(Homework)", "");
 				}
 			}
 			// get number of lines get here System.out.println(count);
@@ -59,14 +65,14 @@ public class WAScorer {
 		}       
 	}
 	
-	public void parseLine(String[] currentLine) {
+	public void parseLine(String[] currentLine, String currentAssignment) {
 		//Set some guidelines to handle scores of 0
 		//0 is in index 1 so if value of index 1 is 0, we print that instead
 		setTotalTimes(getTotalTimes() + 1);
 		if (String.valueOf(currentLine[1]).equals("0")) {
-			System.out.println(currentLine[1]);
+			System.out.println(currentAssignment + " " + currentLine[1]);
 		} else {
-			System.out.println(currentLine[1] + " " + currentLine[4]);
+			System.out.println(currentAssignment + " " + currentLine[1] + " " + currentLine[4]);
 			setCompletedScore(getCompletedScore() + Double.parseDouble(currentLine[1]));
 			setPerfectScore(getPerfectScore() + Double.parseDouble(currentLine[4]));
 		}	
