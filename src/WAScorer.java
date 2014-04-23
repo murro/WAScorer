@@ -35,20 +35,19 @@ public class WAScorer {
 	//Method will first open a file and read line by line
 	//Till we can determine how to parse the data
 		String line;
-		int count = 1;
 		//Read the file if the count mod 3 == 0 (no remainder, in this case the 3rd line) print the line. Should always be the score.
 		try {
 			br = new BufferedReader(new FileReader(file));
 			while ((line = br.readLine()) != null) {
+				//New scanner of current line
 				scan = new Scanner(line);
-				if (scan.hasNext("Score:"))
+				//If current line has the phrase "Score: ", it means we are on the correct line to parse data. Create an empty String array and parseit
+				if (scan.hasNext("Score:")) {
 					System.out.println("Found Score!");
-				if (count % 3 == 0) {
 					String[] splitLine;
 					//Split the string here and send to parse
 					parseLine(splitLine = line.split("\\s+"));
 				}
-				count++;
 			}
 			// get number of lines get here System.out.println(count);
 		} catch (IOException e) {
